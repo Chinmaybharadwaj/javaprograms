@@ -1,0 +1,40 @@
+/*
+ * Assignment on networking-1
+ * Create a Client / Server application to build the following application:
+	[x]Client reads a number from a user and sends it to the server
+	[x]Server reads the sent number (conversion from string to integer needed) and finds and prints its factorial.
+ *Date:25/4/20
+ *Author:Chinmay Bharadwaj
+ */
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Server {
+	
+	public static void main(String []args) {
+		
+		try(ServerSocket serverSocket=new ServerSocket(3333)){
+			Socket socket= serverSocket.accept();
+			System.out.println("Client has connected");
+			BufferedReader input=new BufferedReader(
+					new InputStreamReader(socket.getInputStream()));
+			PrintWriter output=new PrintWriter(socket.getOutputStream(),true);
+			
+			while(true) {
+				String echoString=input.readLine();
+				if(echoString.equals("end")) {
+					System.out.println("----------exiting---------");
+					break;
+				}
+				output.println("Echo from server"+ echoString);
+				output.println("Ecdsdsdsdsd");
+			}
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+}

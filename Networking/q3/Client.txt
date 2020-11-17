@@ -1,0 +1,52 @@
+/*
+ * Assignment on networking-3
+ * Implement the following using TCP/UDP:
+	[x]Client receives from the server two different strings
+	[x]Client upon receiving concatenates the two and prints the concatenated string with the resulting length
+ *Date:25/4/20
+ *Author:Chinmay Bharadwaj
+ */
+import java.io.BufferedReader;
+import java.io.IOException;	
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Scanner;
+
+public class Client {
+
+	public static void main(String[] args) {
+	try {
+		//creating the socket to interact with the Server
+		Socket socket=new Socket("localhost",3333);
+		//storing the data input stream
+		BufferedReader echeos=new BufferedReader(
+				new InputStreamReader(socket.getInputStream()));
+		PrintWriter stringEchos=new PrintWriter(socket.getOutputStream(),true);
+		Scanner sc=new Scanner(System.in);
+		String inputData;
+		String response;
+		do {
+			System.out.println("Press Enter");
+			inputData=sc.nextLine();
+			stringEchos.println(inputData);
+			if(!inputData.equals("exit")) {
+				response=echeos.readLine();
+				String one=response;
+				System.out.println("String one  :"+response);
+				response=echeos.readLine();
+				String two=response;
+				System.out.println("String two  :"+response);
+				System.out.println("After Concatanation :"+one+two);
+				System.out.println("Length of the String after Concatanation  :"+one.length()+two.length());
+				inputData="exit";
+			}
+		}while(!inputData.equals("exit"));
+		sc.close();
+		socket.close();
+	}catch(IOException e) {
+		System.out.println(e);
+	}
+	}
+
+}

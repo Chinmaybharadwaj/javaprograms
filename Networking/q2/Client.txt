@@ -1,0 +1,51 @@
+/*
+ * Assignment on networking-2
+ * Perform the same for the following:
+	[1]Client reads a string and sends it to server
+	[2]Server reverses it and prints Reversed string as well as original string
+	[3]In turn prints whether its a Palindrome or not.
+	[4]return the reversed string to the client along with the result
+
+ *Date:25/4/20
+ *Author:Chinmay Bharadwaj
+ */
+import java.io.BufferedReader;
+import java.io.IOException;	
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Scanner;
+
+public class Client {
+
+	public static void main(String[] args) {
+		System.out.println("----------Type 'exit' to stop running the program----------");
+	try {
+		//creating the socket to interact with the Server
+		Socket socket=new Socket("localhost",3333);
+		//storing the data input stream
+		BufferedReader echeos=new BufferedReader(
+				new InputStreamReader(socket.getInputStream()));
+		PrintWriter stringEchos=new PrintWriter(socket.getOutputStream(),true);
+		Scanner sc=new Scanner(System.in);
+		String inputData;
+		String response;
+		do {
+			System.out.println("Enter the String");
+			inputData=sc.nextLine();
+			stringEchos.println(inputData);
+			if(!inputData.equals("exit")) {
+				response=echeos.readLine();
+				System.out.println(response);
+				response=echeos.readLine();
+				System.out.println(response);
+			}
+		}while(!inputData.equals("exit"));
+		sc.close();
+		socket.close();
+	}catch(IOException e) {
+		System.out.println(e);
+	}
+	}
+
+}

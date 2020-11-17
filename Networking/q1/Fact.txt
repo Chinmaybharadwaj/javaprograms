@@ -1,0 +1,10 @@
+public class Fact {
+	static int fact=1;
+	public static int returnFact(int num) {
+		fact=1;
+		for(int i=1;i<=num;i++) {
+			fact=fact*i;
+		}
+		return fact;
+	}
+}

@@ -1,0 +1,61 @@
+/*
+ * Assignment on networking-2
+ * Perform the same for the following:
+	[1]Client reads a string and sends it to server
+	[2]Server reverses it and prints Reversed string as well as original string
+	[3]In turn prints whether its a Palindrome or not.
+	[4]return the reversed string to the client along with the result
+
+ *Date:25/4/20
+ *Author:Chinmay Bharadwaj
+ */
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Server {
+	
+	public static void main(String []args) {
+		try(ServerSocket serverSocket=new ServerSocket(3333)){
+			Socket socket= serverSocket.accept();
+			System.out.println("Client has connected");
+			BufferedReader input=new BufferedReader(
+					new InputStreamReader(socket.getInputStream()));
+			PrintWriter output=new PrintWriter(socket.getOutputStream(),true);
+			
+			while(true) {
+				String echoString=input.readLine();
+				StringBuilder reversed;
+				StringBuilder notReversed;
+				if(echoString.equals("end")) {
+					System.out.println("----------exiting---------");
+					break;
+				}
+				//will catch the exception if the user enters an character without the
+				try {
+				notReversed=new StringBuilder(echoString);
+				reversed=notReversed.reverse();
+				output.println("Reversed String:"+reversed);
+				System.out.println("Reversed String :"+reversed);
+				if(echoString.equals(reversed.toString())) {
+					output.println("It is a Palindrome");
+					System.out.println("it is a Palindrome");					
+				}
+				else {
+					output.println("Not a Palindrome");
+					System.out.println("it is not a Palindrome");			
+				}
+				
+				}catch(Exception e) {
+					output.println("----------!!!!Empty String Not Excepted!!!!----------");
+				}
+				
+			}
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
